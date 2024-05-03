@@ -122,7 +122,9 @@ function NewsForm() {
  
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+        console.log(newsData)
         try {
             const docRef = await addDoc(collection(db, 'dailynews'), newsData);
             console.log("Data successfully added to 'dailynews' collection with ID: ", docRef.id);
