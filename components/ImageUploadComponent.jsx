@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
-import { storage } from '../app/config/firebase'; // or wherever your firebase.js file is
+import { storage } from '../firebase'; // or wherever your firebase.js file is
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import imageCompression from 'browser-image-compression';
 

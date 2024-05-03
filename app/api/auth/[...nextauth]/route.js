@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
-import { app, auth, db } from './../../../config/firebase';
+import { app, auth, db } from '../../../../firebase'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const handler = NextAuth({

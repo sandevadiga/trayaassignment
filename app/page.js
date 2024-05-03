@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { signIn } from 'next-auth/react';
 import Dashbord from '../components/Dashbord';
 
-
+require('dotenv').config();
 
 
 const page = () => {
