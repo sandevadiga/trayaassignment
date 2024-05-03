@@ -1,39 +1,64 @@
-'use client'// pages/index.js
+'use client'
+import React, { useState } from 'react';
+import { useSession } from "next-auth/react";
+import { signIn } from 'next-auth/react';
+import Dashbord from '../components/Dashbord';
 
-import { signIn, useSession } from 'next-auth/react';
-import { useState } from 'react';
-import GoalList from '../components/GoalList'
 
-export default function Home() {
-  const { data: session } = useSession();
-  
+const page = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { data: session  ,update} = useSession();
 
-  // console.log(session);
+
+
+  const signInWithEmailPassword = async (e) => {
+    e.preventDefault();
+      const data = await  signIn('credentials', { redirect: false, email: email ,password: password })
+  };
+
+
 
   return (
-    <>
-      {!session?.user && (
-        <section className="bg-gray-50 dark:bg-gray-900">
-          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-             Traya
-            </a>
-            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  Sign in to your account
-                </h1>
-                <button type="submit" onClick={() => signIn('google')} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  Sign in
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md text-black">
+      {!session?.user&& (
+        <>
+ <h2 className="text-2xl font-semibold mb-6">Login</h2>
+ <form onSubmit={signInWithEmailPassword}>
+   <div className="mb-4">
+     <label htmlFor="title" className="block font-medium mb-1">Email</label>
+     <input
+       id="title"
+       type="email"
+       className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+       value={email}
+       onChange={(e) => setEmail(e.target.value)}
+       required
+     />
+   </div>
+   <div className="mb-4">
+     <label htmlFor="maxTime" className="block font-medium mb-1">Password</label>
+     <input
+       id="maxTime"
+       type="password"
+       className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+       value={password}
+       onChange={(e) => setPassword(e.target.value)}
+       required
+     />
+   </div>
+   <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+     Login
+   </button>
+ </form>
+ </>
       )}
-      {session?.user && (
-        <GoalList/>
-      )}
-    </>
+     
+     {session &&(
+    <Dashbord/>
+     )}
+    </div>
   );
-}
+};
+
+export default page;

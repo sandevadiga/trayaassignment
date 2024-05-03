@@ -17,13 +17,13 @@ function Nav() {
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><Link href="/" > GoaL Tracker</Link></span>
+        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><Link href="/" > Kannada4U.com  </Link></span>
         
        { session &&  <div className="flex items-center gap-10   md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded={isDropdownOpen} onClick={toggleDropdown}>
+          {/* <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded={isDropdownOpen} onClick={toggleDropdown}>
             <span className="sr-only">Open user menu</span>
             <img className="w-8 h-8 rounded-full" src={session?.user.image} alt={session?.user.name + "'s photo"} />
-          </button>
+          </button> */}
             <span className="block text-sm text-gray-900 dark:text-white ml-6 ">{session?.user.name}</span>
 
           {isDropdownOpen && (

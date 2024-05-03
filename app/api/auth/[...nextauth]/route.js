@@ -1,47 +1,46 @@
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-
-import User from '../../../../models/user';
-import { connectToDB } from '../../../../utils/database';
+import CredentialsProvider from "next-auth/providers/credentials";
+import { app, auth, db } from './../../../config/firebase';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const handler = NextAuth({
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
+          if (!userCredential.user) {
+            throw new Error("User not found");
+          }
+          const uid = userCredential.user.uid;
+          return userCredential.user;
+
+        } catch (error) {
+          console.log("Error logging in:", error);
+          throw error;
+        }
+      }
     })
   ],
   callbacks: {
-    async session({ session }) {
-      // store the user id from MongoDB to session
-      const sessionUser = await User.findOne({ email: session.user.email });
-      session.user.id = sessionUser._id.toString();
-
+    async session({ session, token }) {
+  
       return session;
     },
     async signIn({ account, profile, user, credentials }) {
       try {
-        await connectToDB();
-
-        // check if user already exists
-        const userExists = await User.findOne({ email: profile.email });
-
-        // if not, create a new document and save user in MongoDB
-        if (!userExists) {
-          await User.create({
-            email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(),
-            image: profile.picture,
-          });
-        }
-
-        return true
+        return true;
       } catch (error) {
         console.log("Error checking if user exists: ", error.message);
-        return false
+        return false;
       }
-    },
+    }
   }
-})
+});
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
