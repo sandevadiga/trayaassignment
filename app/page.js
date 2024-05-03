@@ -5,8 +5,7 @@ import { signIn } from 'next-auth/react';
 import Dashbord from '../components/Dashbord';
 
 
-console.log("Firebase API Key:", process.env.REACT_APP_FIREBASE_API_KEY);
- 
+
 
 const page = () => {
   const [email, setEmail] = useState('');
